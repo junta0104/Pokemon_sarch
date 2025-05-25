@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>全体サンプル</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    h2 {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #007BFF;
+    }
+    .card {
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+
+<div class="text-center mt-4">
+  <h2 class="fade-in">✨ 全体サンプルポータル ✨</h2>
+  <p class="text-muted">FrontControllerパターンを使ったシステム一覧</p>
+</div>
+
+<div class="container">
+
+  <!-- 従業員管理セクション -->
+  <div class="card fade-in">
+    <div class="card-header bg-primary text-white">
+      <i class="bi bi-person-fill-lock me-2"></i>従業員管理システム
+    </div>
+    <div class="card-body">
+      <p><i class="bi bi-box-arrow-in-right me-1"></i><a href="javasys_employee/employeeFC" class="btn btn-outline-primary btn-sm">ログイン画面へ</a></p>
+    </div>
+  </div>
+
+  <!-- 得意先管理システム -->
+  <div class="card fade-in">
+    <div class="card-header bg-success text-white">
+      <i class="bi bi-people-fill me-2"></i>得意先管理システム
+    </div>
+    <div class="card-body">
+      <ul class="list-unstyled">
+        <li><i class="bi bi-search me-1"></i><a href="javasys_customer/search" class="btn btn-outline-success btn-sm">得意先検索</a></li>
+        <li><i class="bi bi-person-plus me-1"></i><a href="javasys_customer/register" class="btn btn-outline-success btn-sm">得意先登録</a></li>
+        <li><i class="bi bi-person-dash me-1"></i><a href="javasys_customer/delete" class="btn btn-outline-success btn-sm">得意先削除</a></li>
+        <li><i class="bi bi-pencil-square me-1"></i><a href="javasys_customer/edit" class="btn btn-outline-success btn-sm">得意先変更</a></li>
+        <li><i class="bi bi-list-ul me-1"></i><a href="javasys_customer/list" class="btn btn-outline-success btn-sm">得意先一覧</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 得意先集計システム -->
+  <div class="card fade-in">
+    <div class="card-header bg-info text-white">
+      <i class="bi bi-bar-chart-line me-2"></i>得意先集計システム
+    </div>
+    <div class="card-body">
+      <ul class="list-unstyled">
+        <li><i class="bi bi-calendar2-month me-1"></i><a href="javasys_customer/monthly" class="btn btn-outline-info btn-sm">月別受注集計</a></li>
+        <li><i class="bi bi-calendar2 me-1"></i><a href="javasys_customer/yearly" class="btn btn-outline-info btn-sm">年次受注集計</a></li>
+        <li><i class="bi bi-boxes me-1"></i><a href="javasys_customer/product" class="btn btn-outline-info btn-sm">商品別受注集計</a></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap JS (optional if needed) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
