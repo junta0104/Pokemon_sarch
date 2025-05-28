@@ -1,0 +1,13 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow mb-4 px-3">
+  <a class="navbar-brand" href="#">得意先管理システム</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link text-white" href="/jsys/jsysFC?buttonId=V200_01_02">検索</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/jsys/jsysFC?buttonId=V200_01_06">一覧</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/jsys/jsysFC?buttonId=V200_01_03">登録</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/jsys/jsysFC?buttonId=V200_01_05">変更</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="/jsys/jsysFC?buttonId=V200_01_04">削除</a></li>
+    </ul>
+  </div>
+</nav>
