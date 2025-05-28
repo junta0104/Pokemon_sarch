@@ -1,0 +1,58 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="header.jsp" %>
+<%@ taglib uri="http://jakarta.apache.org/taglibs/standard" prefix="c" %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>得意先変更</title>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Style.css">
+</head>
+<body>
+<div class="container">
+  <h2 class="text-center mb-4">得意先変更</h2>
+
+  <form action="/jsys/jsysFC" method="post">
+    <input type="hidden" name="buttonId" value="V201_01_02">
+
+    <div class="mb-3">
+      <label class="form-label">顧客コード</label>
+      <input type="text" class="form-control" name="custCode" value="<c:out value='${param.custCode}'/>" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">得意先名</label>
+      <input type="text" class="form-control" name="custName" value="<c:out value='${param.custName}'/>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">電話番号</label>
+      <input type="text" class="form-control" name="phone" value="<c:out value='${param.phone}'/>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">郵便番号</label>
+      <input type="text" class="form-control" name="zipcode" value="<c:out value='${param.zipcode}'/>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">住所</label>
+      <input type="text" class="form-control" name="address" value="<c:out value='${param.address}'/>">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">割引率</label>
+      <input type="text" class="form-control" name="discount" value="<c:out value='${param.discount}'/>">
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-success">変更を保存</button>
+    </div>
+  </form>
+
+  <div class="text-center text-danger mt-3">
+    <c:out value="${requestScope.errorMessage}" />
+  </div>
+</div>
+<%@ include file="footer.jsp" %>
+</body>
+</html>
