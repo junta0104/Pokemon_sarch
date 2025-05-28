@@ -1,0 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<footer class="footer bg-success text-white text-center py-2 mt-5 w-100">
+  <div>© 2025 得意先管理システム</div>
+</footer>
