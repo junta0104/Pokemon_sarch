@@ -1,0 +1,62 @@
+<%@page contentType="text/html; charset=UTF-8*
+<%@include file="header.jsp" %>
+
+＜％--taglibディレクティブで、使用するタグライブラリを宣言 --％＞
+‹%@ taglib uri="jakarta.tags.core*prefix="C"%>
+< !DOCTYPE html>
+<html >
+
+＜！--<header>へッター</headery -->
+<head>
+
+‹meta chafset="UTF-8">
+＜title>得意先変更く/title＞
+<link rel = "stylesheet"
+
+</head>
+href = "${pageContext.request.contextPath}/css/Style.css*>
+ < body>
+<div style="text-align: center">
+
+<h2>得意先麥更</h2>
+
+</div>
+
+‹form action="/jsys/jsysFC method="post" >
+<div style="text-align: right;
+
+‹button type="submit" name="buttonId" value="V200_101_01”>メイン画面一へ戻る</button＞
+
+</div>
+
+<div style="text-align: center">
+
+    得意先コード<input type="text" name="custCode" value="<c:out value="${ param.custCode }" /›"›
+‹button type="submit" name="buttonId" value="V201_01_02">検索</button><br>
+得意先名‹input type="text" name="custCode" value="<c:out value="${ param. custCode }" /›"›‹br>
+電話番号
+<input type="text" name="custCode" value="<c: out
+value="${ param. custCode }" />">‹br>
+郵便番号<input type="text" name="custCode" value="<c:out value="${ param.custCode }" />">‹br>
+
+住所<input type="text" name="custCode" value="<c:out value="${ param.custCode }" />">‹br>
+
+割引率<input type="text" name="custCode" value="<c:out value="${ param.custCode }" />">‹br>
+
+‹button type="submit" name="buttonId" value="V201_01_02">変更</button><br>
+
+</form>
+
+</div>
+<div style="text-align: center; color:red; font-weight: bold; "›
+＜％--エラーメッセージがある場合、出力--％＞
+
+<c:out value="${requestScope. errorMessage}* />
+
+‹/div>
+
+</body>
+
+</html>
+
+<％@include file="footer-jsp"％>
