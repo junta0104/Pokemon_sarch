@@ -1,0 +1,20 @@
+public class CustomerUpdateLogic {
+	public boolean updateCustomer(Customer customer) throws SalesBusinessException, SalesSystemException {
+        boolean result = false;
+
+        try (Connection con = ConnectionManager.getConnection()) {
+            CustomerDAO dao = new CustomerDAO(con);
+
+            result = dao.updateCustomer(customer); 
+
+            if (!result) {
+                throw new SalesBusinessException("該当する得意先コードは存在しません。");
+            }
+
+        } catch (SQLException e) {
+            throw new SalesSystemException("システムエラーが発生しました。システム管理者に連絡してください。");
+        }
+
+        return result;
+    }
+}
