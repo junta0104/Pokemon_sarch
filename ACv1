@@ -1,0 +1,67 @@
+public class CustomerUpdateAction implements ActionIF {
+
+    public String execute(HttpServletRequest request) {
+        String page = "V204_01CustomerUpdateResultView.jsp";
+
+        try {
+            // 入力値取得
+            String custCode = request.getParameter("custCode");
+            String custName = request.getParameter("custName");
+            String telNo = request.getParameter("telNo");
+            String postalCode = request.getParameter("postalCode");
+            String address = request.getParameter("address");
+            String discountStr = request.getParameter("discount");
+
+            // 入力チェック
+            if (isEmpty(custCode)) {
+                throw new SalesBusinessException("得意先コードを入力してください。");
+            }
+            if (isEmpty(custName)) {
+                throw new SalesBusinessException("得意先名を入力してください。");
+            }
+            if (isEmpty(telNo)) {
+                throw new SalesBusinessException("電話番号を入力してください。");
+            }
+            if (isEmpty(postalCode)) {
+                throw new SalesBusinessException("郵便番号を入力してください。");
+            }
+            if (isEmpty(address)) {
+                throw new SalesBusinessException("住所を入力してください。");
+            }
+            if (isEmpty(discountStr)) {
+                throw new SalesBusinessException("割引率を入力してください。");
+            }
+
+            // 割引率の数値変換チェック
+            int discountRate;
+            try {
+                discountRate = Integer.parseInt(discountStr);
+            } catch (NumberFormatException e) {
+                throw new SalesBusinessException("割引率は整数で入力してください。");
+            }
+
+            // 入力情報をCustomerオブジェクトにまとめる
+            Customer customer = new Customer(custCode, custName, telNo, postalCode, address, discountRate);
+
+            // 更新処理
+            CustomerUpdateLogic logic = new CustomerUpdateLogic();
+            boolean result = logic.updateCustomer(customer);
+
+            if (!result) {
+                throw new SalesBusinessException("該当する得意先コードは存在しません。");
+            }
+
+            request.setAttribute("customer", customer);
+
+        } catch (SalesBusinessException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            page = "V204_01CustomerUpdateView.jsp";
+        } catch (SalesSystemException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            page = "V901_01SystemErrorPage.jsp";
+        }
+
+        return page;
+    }
+
+}
