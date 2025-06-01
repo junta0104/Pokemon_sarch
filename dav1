@@ -1,0 +1,32 @@
+public boolean updateCustomer(Customer customer) throws SQLException {
+		String sql = "UPDATE customer SET customer_name = ?, customer_telno = ?, customer_postalcode = ?, "
+				+ "customer_address = ?, customer_discountrate = ? "
+				+ "WHERE customer_code = ? ";
+
+		PreparedStatement stmt = null;
+		boolean result = false;
+
+		try {
+			stmt = con.prepareStatement(sql);
+			//パラメータの設定
+			stmt.setString(1, customer.getcustName());
+			stmt.setString(2, customer.gettelNo());
+			stmt.setString(3, customer.getpostalCode());
+			stmt.setString(4, customer.getaddress());
+			stmt.setInt(5, customer.getdiscountRate());
+			stmt.setString(6, customer.getcustCode());
+			
+			int count = stmt.executeUpdate();
+
+			if(count == 1) {
+				result = true;
+			}
+			
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+
+		return result;
+	}
