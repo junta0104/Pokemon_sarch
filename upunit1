@@ -1,0 +1,55 @@
+--- V204_01CustomerUpdate.jsp（修正前） 
++++ V204_01CustomerUpdate.jsp（修正後）
+@@ -10,7 +10,7 @@
+       <div class="form-row">
+         <label class="form-label">得意先コード</label>
+         <div class="input-with-button">
+-          <input class="form-input" type="text" name="custCode" value="${param.custCode}" title="得意先コードを入力してください" />
++          <!-- 検索結果後は requestScope.custCode を優先して表示 -->
++          <input class="form-input" type="text" name="custCode"
++                 value="<c:out value='${not empty requestScope.custCode ? requestScope.custCode : param.custCode}'/>"
++                 title="得意先コードを入力してください" />
+           <button type="submit" name="buttonId" value="V204_01_02" class="search-button">検索</button>
+         </div>
+       </div>
+@@ -18,13 +18,24 @@
+       <div class="form-row">
+         <label class="form-label">得意先名</label>
+-        <input class="form-input" type="text" name="custName" value="${param.custName}" title="得意先名を入力してください" />
++        <!-- 検索結果後は requestScope.custName を表示、検索前は空 -->
++        <input class="form-input" type="text" name="custName"
++               value="<c:out value='${not empty requestScope.custName ? requestScope.custName : ""}'/>"
++               title="得意先名を入力してください" />
+       </div>
+
+       <div class="form-row">
+         <label class="form-label">電話番号</label>
+-        <input class="form-input" type="text" name="telno" value="${param.telno}" title="電話番号を入力してください" />
++        <input class="form-input" type="text" name="telno"
++               value="<c:out value='${not empty requestScope.telno ? requestScope.telno : ""}'/>"
++               title="電話番号を入力してください" />
+       </div>
+
+       <div class="form-row">
+         <label class="form-label">郵便番号</label>
+-        <input class="form-input" type="text" name="postalcode" value="${param.postalcode}" title="郵便番号を入力してください" />
++        <input class="form-input" type="text" name="postalcode"
++               value="<c:out value='${not empty requestScope.postalcode ? requestScope.postalcode : ""}'/>"
++               title="郵便番号を入力してください" />
+       </div>
+
+       <div class="form-row">
+         <label class="form-label">住所</label>
+-        <input class="form-input" type="text" name="address" value="${param.address}" title="住所を入力してください" />
++        <input class="form-input" type="text" name="address"
++               value="<c:out value='${not empty requestScope.address ? requestScope.address : ""}'/>"
++               title="住所を入力してください" />
+       </div>
+
+       <div class="form-row">
+         <label class="form-label">割引率</label>
+-        <input class="form-input" type="text" name="discountrate" value="${param.discountrate}" title="割引率（％）を入力してください" />
++        <input class="form-input" type="text" name="discountrate"
++               value="<c:out value='${not empty requestScope.discountrate ? requestScope.discountrate : ""}'/>"
++               title="割引率（％）を入力してください" />
+       </div>
