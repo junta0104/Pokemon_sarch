@@ -1,0 +1,61 @@
+package jsys.sales.web;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jsys.sales.common.SalesBusinessException;
+import jsys.sales.common.SalesSystemException;
+import jsys.sales.dao.CustomerDAO;
+import jsys.sales.entity.Customer;
+import jsys.sales.util.ConnectionManager;
+
+import java.sql.SQLException;
+
+/**
+ *得意先変更画面の検索用
+ * 得意先コードを受け取り、存在すればリクエスト属性にCustomerを詰めて同画面を返す。
+ * 存在しなければエラーメッセージを詰めて同画面を返す。
+ */
+public class CustomerFindUpdateAction implements ActionIF {
+
+    @Override
+    public String execute(HttpServletRequest request) {
+        
+        String page = "V204_01CustomerUpdateView.jsp";
+
+        try {
+          
+            String custCode = request.getParameter("custCode");
+            if (custCode == null || custCode.trim().isEmpty()) {
+                throw new SalesBusinessException("得意先コードを入力してください。");
+            }
+
+            // 
+            CustomerDAO dao = new CustomerDAO(ConnectionManager.getConnection());
+            Customer customer = dao.findCustomer(custCode.trim());
+
+            // 
+            if (customer == null) {
+                throw new SalesBusinessException("該当する得意先が見つかりませんでした。");
+            }
+
+            // 
+            request.setAttribute("custCode",     customer.getCustCode());
+            request.setAttribute("custName",     customer.getCustName());
+            request.setAttribute("telNo",        customer.getTelNo());
+            request.setAttribute("postalCode",   customer.getPostalCode());
+            request.setAttribute("address",      customer.getAddress());
+            request.setAttribute("discountRate", customer.getDiscountRate());
+
+          } catch (SalesBusinessException e) {
+            // 業務エラー発生時の処理
+            request.setAttribute("errorMessage", e.getMessage());
+            page = "V204_01CustomerUpdateView.jsp";
+        } catch (SalesSystemException e) {
+            // システムエラー発生時の処理
+            request.setAttribute("errorMessage", e.getMessage());
+            page = "V901_01SystemErrorPage.jsp";
+        }
+
+       
+        return page;
+    }
+}
