@@ -1,55 +1,119 @@
---- V204_01CustomerUpdate.jsp（修正前） 
-+++ V204_01CustomerUpdate.jsp（修正後）
-@@ -10,7 +10,7 @@
-       <div class="form-row">
-         <label class="form-label">得意先コード</label>
-         <div class="input-with-button">
--          <input class="form-input" type="text" name="custCode" value="${param.custCode}" title="得意先コードを入力してください" />
-+          <!-- 検索結果後は requestScope.custCode を優先して表示 -->
-+          <input class="form-input" type="text" name="custCode"
-+                 value="<c:out value='${not empty requestScope.custCode ? requestScope.custCode : param.custCode}'/>"
-+                 title="得意先コードを入力してください" />
-           <button type="submit" name="buttonId" value="V204_01_02" class="search-button">検索</button>
-         </div>
-       </div>
-@@ -18,13 +18,24 @@
-       <div class="form-row">
-         <label class="form-label">得意先名</label>
--        <input class="form-input" type="text" name="custName" value="${param.custName}" title="得意先名を入力してください" />
-+        <!-- 検索結果後は requestScope.custName を表示、検索前は空 -->
-+        <input class="form-input" type="text" name="custName"
-+               value="<c:out value='${not empty requestScope.custName ? requestScope.custName : ""}'/>"
-+               title="得意先名を入力してください" />
-       </div>
+package jsys.sales.web;
 
-       <div class="form-row">
-         <label class="form-label">電話番号</label>
--        <input class="form-input" type="text" name="telno" value="${param.telno}" title="電話番号を入力してください" />
-+        <input class="form-input" type="text" name="telno"
-+               value="<c:out value='${not empty requestScope.telno ? requestScope.telno : ""}'/>"
-+               title="電話番号を入力してください" />
-       </div>
+import jakarta.servlet.http.HttpServletRequest;
+import jsys.sales.common.*;
+import jsys.sales.entity.Customer;
+import jsys.sales.logic.*;
 
-       <div class="form-row">
-         <label class="form-label">郵便番号</label>
--        <input class="form-input" type="text" name="postalcode" value="${param.postalcode}" title="郵便番号を入力してください" />
-+        <input class="form-input" type="text" name="postalcode"
-+               value="<c:out value='${not empty requestScope.postalcode ? requestScope.postalcode : ""}'/>"
-+               title="郵便番号を入力してください" />
-       </div>
+public class CustomerUpdateAction implements ActionIF {
+    public String execute(HttpServletRequest request) {
 
-       <div class="form-row">
-         <label class="form-label">住所</label>
--        <input class="form-input" type="text" name="address" value="${param.address}" title="住所を入力してください" />
-+        <input class="form-input" type="text" name="address"
-+               value="<c:out value='${not empty requestScope.address ? requestScope.address : ""}'/>"
-+               title="住所を入力してください" />
-       </div>
+        String page = "V204_01CustomerUpdate.jsp";
+        String buttonId = request.getParameter("buttonId");
 
-       <div class="form-row">
-         <label class="form-label">割引率</label>
--        <input class="form-input" type="text" name="discountrate" value="${param.discountrate}" title="割引率（％）を入力してください" />
-+        <input class="form-input" type="text" name="discountrate"
-+               value="<c:out value='${not empty requestScope.discountrate ? requestScope.discountrate : ""}'/>"
-+               title="割引率（％）を入力してください" />
-       </div>
+        try {
+            if ("mainMenu".equals(buttonId)) {
+                // メインメニューに戻る処理（画面遷移のみ）
+                page = "V200_01MainMenu.jsp";
+
+            } else if ("search".equals(buttonId)) {
+                // 検索処理
+                String custCode = request.getParameter("custCode");
+
+                if (custCode == null || custCode.trim().isEmpty()) {
+                    throw new SalesBusinessException("得意先コードを入力してください。");
+                }
+
+                CustomerFindLogic logic = new CustomerFindLogic();
+                Customer customer = logic.findCustomer(custCode.trim());
+
+                if (customer == null) {
+                    throw new SalesBusinessException("該当する得意先が見つかりませんでした。");
+                }
+
+                // 検索結果をリクエスト属性に格納
+                request.setAttribute("custCode", customer.getCustCode());
+                request.setAttribute("custName", customer.getCustName());
+                request.setAttribute("telNo", customer.getTelNo());
+                request.setAttribute("postalCode", customer.getPostalCode());
+                request.setAttribute("address", customer.getAddress());
+                request.setAttribute("discountRate", customer.getDiscountRate());
+
+            } else if ("update".equals(buttonId)) {
+                // 更新処理
+
+                // パラメータ取得
+                String custCode     = request.getParameter("custCode");
+                String custName     = request.getParameter("custName");
+                String telNo        = request.getParameter("telNo");
+                String postalCode   = request.getParameter("postalCode");
+                String address      = request.getParameter("address");
+                String discountRateStr = request.getParameter("discountRate");
+
+                // 入力チェック
+                if (custCode == null || custCode.isEmpty()) {
+                    throw new SalesBusinessException("得意先コードを入力してください。");
+                }
+                if (custName == null || custName.isEmpty()) {
+                    throw new SalesBusinessException("得意先名を入力してください。");
+                }
+                if (telNo == null || telNo.isEmpty()) {
+                    throw new SalesBusinessException("電話番号を入力してください。");
+                }
+                if (postalCode == null || postalCode.isEmpty()) {
+                    throw new SalesBusinessException("郵便番号を入力してください。");
+                }
+                if (address == null || address.isEmpty()) {
+                    throw new SalesBusinessException("住所を入力してください。");
+                }
+                if (discountRateStr == null || discountRateStr.isEmpty()) {
+                    throw new SalesBusinessException("割引率を入力してください。");
+                }
+
+                int discountRate;
+                try {
+                    discountRate = Integer.parseInt(discountRateStr);
+                    if (discountRate < 0) {
+                        throw new SalesBusinessException("割引率には0以上の数値を入力してください。");
+                    }
+                } catch (NumberFormatException e) {
+                    throw new SalesBusinessException("割引率には数値を入力してください。");
+                }
+
+                // Customer オブジェクト作成
+                Customer customer = new Customer();
+                customer.setCustCode(custCode);
+                customer.setCustName(custName);
+                customer.setTelNo(telNo);
+                customer.setPostalCode(postalCode);
+                customer.setAddress(address);
+                customer.setDiscountRate(discountRate);
+
+                // 更新処理
+                CustomerUpdateLogic logic = new CustomerUpdateLogic();
+                boolean updated = logic.updateCustomerData(custCode, customer);
+
+                if (!updated) {
+                    throw new SalesBusinessException("得意先情報の更新に失敗しました。");
+                }
+
+                request.setAttribute("successMessage", "得意先情報を更新しました。");
+                request.setAttribute("custCode", customer.getCustCode());
+                request.setAttribute("custName", customer.getCustName());
+                request.setAttribute("telNo", customer.getTelNo());
+                request.setAttribute("postalCode", customer.getPostalCode());
+                request.setAttribute("address", customer.getAddress());
+                request.setAttribute("discountRate", customer.getDiscountRate());
+
+            }
+
+        } catch (SalesBusinessException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+        } catch (SalesSystemException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            page = "V901_01SystemErrorPage.jsp";
+        }
+
+        return page;
+    }
+}
