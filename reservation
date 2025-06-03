@@ -1,0 +1,93 @@
+package jsys.sales.web;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jsys.sales.common.*;
+import jsys.sales.entity.Customer;
+import jsys.sales.logic.*;
+
+public class CustomerUpdateAction implements ActionIF {
+    public String execute(HttpServletRequest request) {
+        // デフォルトの遷移先（失敗または入力初期表示）
+        String page = "V204_01CustomerUpdate.jsp";
+        try {
+            // パラメータの取得
+            String custCode = request.getParameter("custCode");
+            String custName = request.getParameter("custName");
+            String telNo = request.getParameter("telNo");
+            String postalCode = request.getParameter("postalCode");
+            String address = request.getParameter("address");
+            String discountRateStr = request.getParameter("discountRate");
+
+            // 入力チェック
+            if (custCode == null || custCode.isEmpty()) {
+                throw new SalesBusinessException("得意先コードを入力してください。");
+            }
+            if (custName == null || custName.isEmpty()) {
+                throw new SalesBusinessException("得意先名を入力してください。");
+            }
+            if (telNo == null || telNo.isEmpty()) {
+                throw new SalesBusinessException("電話番号を入力してください。");
+            }
+            if (postalCode == null || postalCode.isEmpty()) {
+                throw new SalesBusinessException("郵便番号を入力してください。");
+            }
+            if (address == null || address.isEmpty()) {
+                throw new SalesBusinessException("住所を入力してください。");
+            }
+            if (discountRateStr == null || discountRateStr.isEmpty()) {
+                throw new SalesBusinessException("割引率を入力してください。");
+            }
+
+            // 割引率の数値チェック
+            int discountRate;
+            try {
+                discountRate = Integer.parseInt(discountRateStr);
+                if (discountRate < 0) {
+                    throw new SalesBusinessException("割引率には0以上の数値を入力してください。");
+                }
+            } catch (NumberFormatException e) {
+                throw new SalesBusinessException("割引率には数値を入力してください。");
+            }
+
+            // Customerオブジェクト作成
+            Customer customer = new Customer();
+            customer.setCustCode(custCode);
+            customer.setCustName(custName);
+            customer.setTelNo(telNo);
+            customer.setPostalCode(postalCode);
+            customer.setAddress(address);
+            customer.setDiscountRate(discountRate);
+
+            // 更新ロジック呼び出し
+            CustomerUpdateLogic logic = new CustomerUpdateLogic();
+            boolean isUpdated = logic.updateCustomerData(custCode, customer);
+
+            if (isUpdated) {
+                // 更新成功時のリクエストスコープ設定
+                request.setAttribute("custCode", custCode);
+                request.setAttribute("custName", custName);
+                request.setAttribute("telNo", telNo);
+                request.setAttribute("postalCode", postalCode);
+                request.setAttribute("address", address);
+                request.setAttribute("discountRate", discountRate);
+
+                // buttonId によって遷移先を変更
+                String buttonId = request.getParameter("buttonId");
+                if ("V204_05".equals(buttonId)) {
+                    page = "V204_02CustomerUpdateView.jsp";
+                }
+            } else {
+                throw new SalesBusinessException("得意先情報の更新に失敗しました。");
+            }
+
+        } catch (SalesBusinessException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            page = "V201_01CustomerUpdateView.jsp";
+        } catch (SalesSystemException e) {
+            request.setAttribute("errorMessage", e.getMessage());
+            page = "V901_01SystemErrorPage.jsp";
+        }
+
+        return page;
+    }
+}
