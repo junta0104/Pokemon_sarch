@@ -35,15 +35,15 @@ public class FrontController extends HttpServlet {
 
 		// パラメータ未送信または空文字の場合
 		if (buttonId == null || buttonId.equals("")) {
-			buttonId = "V200_01_01";
+			buttonId = "V002_01";
 
 		}
 		// リクエスト種別の判定
 		switch (buttonId) {
 		// TODO 2 プロトタイピング作成演習：得意先検索各種画面遷移に関連するcaseを追加してください。
-			case "V200_01_01":
+			case "V002_01":
 				// ログイン画面へボタン（デフォルト）
-				page = "V200_01CustomerManagementMenu.jsp";
+				page = "V002_01CustomerManagementMenu.jsp";
 				break;
 			case "V200_01_02":
 				//顧客検索画面
@@ -59,23 +59,47 @@ public class FrontController extends HttpServlet {
 				//action = new FindAllItemAction();
 				page = action.execute(request);
 				break;
-			case "V204_01_07":
+			case "V204_01_02":
 				//得意先削除
 				action = new CustomerUpdateAction();
 				page = action.execute(request);
 				break;
-			case "V200_01_04":
+			case "V204_01":
 				//得意先変更
 //				action = new CustomerUpdateAction();
 //				page = action.execute(request);
 //				break;
 				page = "V204_01CustomerUpdate.jsp";
 				break;
-			case "V200_01_06":
-				//得意先一覧
-				//action = new FindAllItemAction();
+
+			case "V204_02":
+				//得意先変更結果画面
+//				action = new CustomerUpdateAction();
+//				page = action.execute(request);
+//				break;
+				page = "V204_02CustomerUpdateView.jsp";
+				break;
+
+			case "V204_03":
+				//得意先検索（変更処理用）
+				action = new CustomerUpdateAction();
 				page = action.execute(request);
 				break;
+
+			case "V204_04":
+//				//得意先検索（変更処理用）
+//				action = new CustomerUpdateAction();
+				page = "V204_04CustomerUpdateCheckView.jsp";
+				break;
+
+
+			case "V204_05":
+				//得意先変更確定
+				action = new CustomerUpdateAction();
+				page = action.execute(request);
+				break;
+
+
 		}
 
 		// 結果画面に転送
