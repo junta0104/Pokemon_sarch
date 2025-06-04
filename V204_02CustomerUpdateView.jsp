@@ -107,28 +107,28 @@
 <!-- <table border="1" style="margin: auto;" > -->
   <tr>
    <th>得意先コード</th>
-	<td><c:out value="${requestScope.custCode}"></c:out></td>
+	<td><c:out value="${param.custCode}"></c:out></td>
   </tr>
   
   <tr>
    <th>得意先名</th>
-   <td><c:out value="${requestScope.custName}"></c:out></td>
+   <td><c:out value="${param.custName}"></c:out></td>
   </tr>
   <tr>
    <th>電話番号</th>
-   <td><c:out value="${requestScope.telNo}"></c:out></td>
+   <td><c:out value="${param.telNo}"></c:out></td>
   </tr>
   <tr>
    <th>郵便番号</th>
-   <td><c:out value="${requestScope.postalCode }"></c:out></td>
+   <td><c:out value="${param.postalCode}"></c:out></td>
   </tr>
   <tr>
    <th>住所</th>
-   <td><c:out value="${requestScope.address}"></c:out></td>
+   <td><c:out value="${param.address}"></c:out></td>
   </tr>
   <tr>
    <th>割引率</th>
-   <td><c:out value="${requestScope.discountRate}"></c:out>%</td>
+   <td><c:out value="${param.discountRate}"></c:out>%</td>
   </tr>
   </table>
   </div>

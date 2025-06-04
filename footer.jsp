@@ -2,5 +2,3 @@
 <footer>
     <small>&copy; 2025 げんきdeいちばん社 All Rights Reserved.</small>
 </footer>
-</body>
-</html>
