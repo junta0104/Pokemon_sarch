@@ -1,166 +1,121 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%-- pageディレクティブの設定 --%>
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 
+<%-- taglibディレクティブで、使用するタグライブラリを宣言 --%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ include file="headerRegist.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="header_select.jsp" %>
 <meta charset="UTF-8">
-<title>得意先登録</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-
+<title>得意先登録結果</title>
+<link rel = "stylesheet" href = "${pageContext.request.contextPath}/css/Style.css">
 <style>
-  body {
-      background-color: #f5f7fa;
-      font-family: Arial, sans-serif;
+  
+    .update-form {
+      max-width: 800px;
+      margin: 40px auto; /* ページ中央に配置、上下の余白を確保 */
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
     }
-
-    header {
-      background-color: #28a745;
-      color: white;
-      padding: 1rem 2rem;
-      margin-bottom: 1.5rem;
+    .update-form h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .update-form .form-group {
+      margin-bottom: 20px;
+    }
+    .update-form label {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    .update-form input[type="text"] {
       width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-
-  .form-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-
-  table th, table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-
-  table td input {
-    width: 90%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  table td input:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
-  }
-
-  .form-button {
-    text-align: center;
-    margin-top: 30px;
-  }
-
-  .form-button button {
-    padding: 15px 40px;
-    font-size: 18px;
-    color: white;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .form-button button:hover {
-    background-color: #45a049;
-  }
-
-  .back-button {
-    text-align: right;
-    margin-bottom: 20px;
-  }
-
-  .back-button button {
-    padding: 15px 40px;
-    font-size: 18px;
-    color: white;
-    background-color: #4CAF50;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .back-button button:hover {
-    background-color: #45a049;
-  }
-
-  .error-message {
-    text-align: center;
-    color: red;
-    font-weight: bold;
-    margin-top: 20px;
-  }
-</style>
+    .update-form .button-section {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .update-form .button-section button {
+      padding: 15px 40px;
+      font-size: 18px;
+    }
+    .back-button {
+      text-align: right;
+      margin-bottom: 20px;
+      padding-right: 20px;
+    }
+    .back-button button {
+      padding: 15px 40px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
-  <div style="text-align: center;">
-    <h2 style="color: #4CAF50;">得意先登録</h2>
-  </div>
+<div style="text-align:center">
+<h2>得意先登録</h2>
 
-  <!-- メイン画面に戻るボタン -->
-  <form action="/jsys/jsysFC" method="post">
-    <div class="back-button">
-      <button type="submit" name="buttonId" value="V002_01">メイン画面へ戻る</button>
-    </div>
-  </form>
+</div>
+<div style="text-align:right">
+<form action="/jsys/jsysFC" method="post">
+<button type="submit" name="buttonId" value="V200_01_01">メニュー画面に戻る</button>
+<br>
+</div>
+</form>
 
-  <!-- 登録フォーム -->
-  <div class="form-container">
-    <form action="/jsys/jsysFC" method="post">
-      <table>
-        <tr>
-          <th>得意先名</th>
-          <td><input type="text" name="custName" value="${param.custName}" title="得意先名を入力してください"></td>
-        </tr>
-        <tr>
-          <th>電話番号</th>
-          <td><input type="text" name="telNo" value="${param.telNo}" title="電話番号を入力してください"></td>
-        </tr>
-        <tr>
-          <th>郵便番号</th>
-          <td><input type="text" name="postalCode" value="${param.postalCode}" title="郵便番号を入力してください"></td>
-        </tr>
-        <tr>
-          <th>住所</th>
-          <td><input type="text" name="address" value="${param.address}" title="住所を入力してください"></td>
-        </tr>
-        <tr>
-          <th>割引率</th>
-          <td><input type="text" name="discountRate" value="${param.discountRate}" title="割引率（％）を入力してください"></td>
-        </tr>
-      </table>
+<form action="/jsys/jsysFC" method="post">
+<div style="text-align:center">
+<div class="w-75 p-3" style="margin: 0 auto;">
+<table border="0" style="margin: auto;">
+<tr>
+<td>得意先名</td>  
+<td><input type ="text" name="custName" value="<c:out value="${param.custName}"/>"></td>
+</tr>
+<tr>
+<td>電話番号</td> 
+<td><input type ="text" name="telNo" value="<c:out value="${param.telNo}"/>"></td>
+</tr>
+<tr>
+<td>郵便番号</td> 
+<td><input type ="text" name="postalCode" value="<c:out value="${param.postalCode}"/>"></td>
+</tr>
+<tr>
+<td>住所</td> 
+<td><input type ="text" name="address" value="<c:out value="${param.address}"/>"></td>
+</tr>
+<tr>
+<td>割引率</td> 
+<td><input type ="number" name="discountRate" value="<c:out value="${param.discountRate}"/>"></td>
+</tr>
+</table>
+<br>
+<button type="submit" name="buttonId" value="V202_02_01">登録</button></td>
+<div style="text-align:center; color:red; font-weight:bold;">
+<%-- エラーメッセージがある場合、出力 --%>
+<c:forEach var="message" items="${requestScope.errorMessageList}">
 
-      <div class="form-button">
-        <button type="submit" name="buttonId" value="V202_02_01">登録</button>
-      </div>
-    </form>
-  </div>
+<p><c:out value="${message}" /></p>
 
-  <!-- エラーメッセージ -->
-  <div class="error-message">
-    <c:out value="${requestScope.errorMessage}" />
-  </div>
+</c:forEach>
+
+</div>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+</div>
+</div>
+<%@ include file="footer.jsp" %>
 </body>
 </html>
-<div style="text-align: center;">
-<%@ include file="footer.jsp" %>
-</div>
